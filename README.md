@@ -18,5 +18,10 @@ Unreal Engine blueprint/visual script based concept for overwatch workshop. Actu
 	1.1. imgui: `imgui`<br>
 	1.2. imgui sdl2: `imgui[sdl2-binding]`<br>
 	1.3. imgui sdl2 renderer: `imgui[sdl2-renderer-binding]`<br><br>
+
+6. Clone repository.
+7. Open `workshop.sln` into your visual studio.
+8. Hit `Build` to compile.
+9. Grab executable file in `C:/path/to/repo/bin/Debug`
 	
 ### With these steps you be able to compile and test current prototype!
