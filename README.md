@@ -9,3 +9,14 @@ Unreal Engine blueprint/visual script based concept for overwatch workshop. Actu
 # Showcase
 
 <a href="https://www.youtube.com/watch?v=IAdcKTDnMNE">Youtube Video</a>
+
+# How to build.
+1. Download and install VS2022 with C++ Desktop Development Support
+2. Download and prepare VCPKG.
+3. Configure VPCKG to integrate globally into VS2022 using command `vcpkg integrate install` (so any dependencies used with VCPKG will be auto linked with our app)
+4. Install these packages in vcpkg: `vcpkg install <package>` where `package`:
+	1.1. imgui: `imgui`
+	1.2. imgui sdl2: `imgui[sdl2-binding]`
+	1.3. imgui sdl2 renderer: `imgui[sdl2-renderer-binding]`
+	
+### With these steps you be able to compile and test current prototype!
