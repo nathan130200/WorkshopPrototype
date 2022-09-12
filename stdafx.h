@@ -1,5 +1,5 @@
-﻿#ifndef STDAFX_H_
-#define STDAFX_H_
+﻿#ifndef _STDAFX_H_
+#define _STDAFX_H_
 
 #include <iostream>
 #include <imgui.h>
@@ -9,6 +9,6 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
 #include "imnodes/imnodes.h"
-#include "workshop/shared.h"
+#include "core/shared.h"
 
-#endif // !STDAFX_H_
+#endif

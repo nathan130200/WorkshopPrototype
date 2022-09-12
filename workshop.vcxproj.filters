@@ -21,7 +21,10 @@
     <ClCompile Include="imnodes\imnodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="workshop\shared.cpp">
+    <ClCompile Include="core\shared.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\impl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,16 +38,19 @@
     <ClInclude Include="imnodes\imnodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="workshop\Node.h">
+    <ClInclude Include="core\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="workshop\shared.h">
+    <ClInclude Include="core\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="workshop\Pin.h">
+    <ClInclude Include="core\Pin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="workshop\IGraphElement.h">
+    <ClInclude Include="core\IGraphElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

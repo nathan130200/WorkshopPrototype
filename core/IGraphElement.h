@@ -43,6 +43,34 @@ protected:
 	}
 
 	virtual void Render() = 0;
+
+protected:
+	virtual void BeginRender()
+	{
+
+	}
+
+	virtual void EndRender()
+	{
+
+	}
+
+public:
+	int32_t GetId() {
+		return m_id;
+	}
+
+	bool IsInitialized() {
+		return m_initialized;
+	}
+
+	const std::string GetTitle() {
+		return m_title;
+	}
+
+	const std::string GetDescription() {
+		return m_description;
+	}
 };
 
 #endif

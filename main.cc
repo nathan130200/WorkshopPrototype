@@ -36,72 +36,70 @@ BOOL WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	// ----------------------------------------------------------------
 
 
-	auto node = new Node(NodeType_ValueEntity, "Last Created Entity");
-	node->AddOutputPin(PinType_Entity, "Self", "A reference to the last effect or icon entity created by the event player (or created at the global level).");
-
 	NodeList nodes;
+
+	auto* entry = new FunctionCallNode_Impl(eFCNF_FlowEnd, "Rule Start");
+	nodes.push_back(entry);
+
+
+	auto* conditions = new Node(NodeType_Function, "Rule Conditions");
+	conditions->AddInputPin(PinType_Flow);
+	conditions->AddInputPin(PinType_Boolean, "Result");
+	nodes.push_back(conditions);
+
+	auto* node = new FunctionCallNode_Impl(eFCNF_FlowBoth, "Start Forcing Player To Be Hero");
+	node->AddInputPin(PinType_Entity, "Player");
+
+	auto p1 = entry->GetPinByIndex(PinKind_Out, 0);
+	auto p2 = node->GetPinByIndex(PinKind_In, 0);
+	static bool doLink = true;
+
+	auto* hero = new EnumPin_Impl(PinKind_In, "Hero", NULL);
+	{
+		const char* s_heroes =
+		{
+			"ANA\0"
+			"ASHE\0"
+			"BAPTISTE\0"
+			"BASTION\0"
+			"BRIGITTE\0"
+			"DOOMFIST\0"
+			"DVA\0"
+			"ECHO\0"
+			"GENJI\0"
+			"WRECKING BALL\0"
+			"HANZO\0"
+			"JUNKRAT\0"
+			"LUCIO\0"
+			"MCCREE\0"
+			"MEI\0"
+			"MERCY\0"
+			"MOIRA\0"
+			"ORISA\0"
+			"PHARAH\0"
+			"REAPER\0"
+			"REINHARDT\0"
+			"ROADHOG\0"
+			"SIGMA\0"
+			"SOLDIER: 76\0"
+			"SOMBRA\0"
+			"SYMMETRA\0"
+			"TORBJORN\0"
+			"TRACER\0"
+			"WIDOWMAKER\0"
+			"WINSTON\0"
+			"ZARYA\0"
+			"ZENYATTA\0"
+		};
+
+		hero->SetOptions(s_heroes);
+	}
+
+	node->AddInputPin(hero);
 	nodes.push_back(node);
 
-	auto node1 = new Node(NodeType_ValueVector, "Make Vector");
-	node1->AddInputPin(PinType_Number, "X", "X component of vector.");
-	node1->AddInputPin(PinType_Number, "Y", "Y component of vector.");
-	node1->AddInputPin(PinType_Number, "Z", "Z component of vector.");
-	node1->AddOutputPin(PinType_Vector, "Result");
-	nodes.push_back(node1);
-
-	auto node2 = new Node(NodeType_Function, "Teleport");
-	node2->AddInputPin(PinType_Flow);
-	node2->AddOutputPin(PinType_Flow);
-	node2->AddInputPin(PinType_Any, "Player");
-	node2->AddInputPin(PinType_Vector, "Position");
-	nodes.push_back(node2);
-
-	auto node3 = new Node(NodeType_Function, "Preload Hero");
-	node3->AddInputPin(PinType_Flow);
-	node3->AddOutputPin(PinType_Flow);
-
-	node3->AddInputPin(PinType_Entity, "Player");
-	auto* hero = node3->AddInputPin(PinType_Enum, "Hero");
-
-	const char* s_heroes = 
-	{
-		"ANA\0"
-		"ASHE\0"
-		"BAPTISTE\0"
-		"BASTION\0"
-		"BRIGITTE\0"
-		"DOOMFIST\0"
-		"DVA\0"
-		"ECHO\0"
-		"GENJI\0"
-		"WRECKING BALL\0"
-		"HANZO\0"
-		"JUNKRAT\0"
-		"LÚCIO\0"
-		"MCCREE\0"
-		"MEI\0"
-		"MERCY\0"
-		"MOIRA\0"
-		"ORISA\0"
-		"PHARAH\0"
-		"REAPER\0"
-		"REINHARDT\0"
-		"ROADHOG\0"
-		"SIGMA\0"
-		"SOLDIER: 76\0"
-		"SOMBRA\0"
-		"SYMMETRA\0"
-		"TORBJORN\0"
-		"TRACER\0"
-		"WIDOWMAKER\0"
-		"WINSTON\0"
-		"ZARYA\0"
-		"ZENYATTA\0"
-	};
-
-	hero->SetEnumValues(s_heroes);
-
-	nodes.push_back(node3);
+	nodes.push_back(new VectorNode_Impl());
+	nodes.push_back(new VectorNode_Impl());
 
 	// ----------------------------------------------------------------
 	ImGui_ImplSDL2_InitForSDLRenderer(window, render);
@@ -136,12 +134,22 @@ BOOL WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		ImGui::Begin("#", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 		{
 			ImNodes::BeginNodeEditor();
-			
+
 			for (auto node : nodes) {
 				node->Render();
 			}
 
-			ImNodes::MiniMap();
+			static bool linked = true;
+
+			if (linked) {
+				ImNodes::Link(1234, p1->GetId(), p2->GetId());
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_ModCtrl)) {
+				linked = !linked;
+			}
+
+			ImNodes::MiniMap(0.15f, ImNodesMiniMapLocation_TopRight);
 			ImNodes::EndNodeEditor();
 		}
 		ImGui::End();

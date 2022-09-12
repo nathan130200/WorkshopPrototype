@@ -21,11 +21,12 @@ enum PinKind {
 class Pin : public GraphElement<PinType>
 {
 protected:
+	class Node* m_parent;
 	PinKind m_kind;
 	ImNodesPinShape m_shape;
 	bool m_connected;
 
-	struct {
+	/*struct {
 		float f = 0;
 		int32_t i = 0;
 		bool b = false;
@@ -33,10 +34,12 @@ protected:
 		int enum_index = 0;
 	} state;
 
-	const char* enumValues;
+	const char* enumValues = "\0";*/
 
 public:
-	Pin(PinKind kind, PinType type, const char* title, const char* description = NULL) : base(type, title, description)
+	Pin(PinKind kind, PinType type, const char* title, const char* description = NULL) :
+		base(type, title, description),
+		m_parent(NULL)
 	{
 		m_kind = kind;
 
@@ -48,11 +51,16 @@ public:
 		m_connected = false;
 	}
 
-	void SetEnumValues(const char* values) {
-		enumValues = values;
+	void SetParent(class Node* node) {
+		assert(m_parent == NULL);
+		m_parent = node;
 	}
 
 	void Render() override;
+
+protected:
+	void BeginRender() override;
+	void EndRender() override;
 };
 
 typedef std::vector<Pin*> PinList;
